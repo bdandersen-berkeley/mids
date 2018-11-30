@@ -18,4 +18,5 @@ while False == inputIsInt:
 y = phone - sumDigits(phone)
 while (y >= 10):
     y = sumDigits(y)
+    
 print("Answer: ", y)
