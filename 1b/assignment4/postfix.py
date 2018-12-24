@@ -1,3 +1,7 @@
+import fileinput
+import os
+import re
+
 class PostfixStackElem:
 
     def __init__(self, value):
@@ -36,8 +40,29 @@ class PostfixStack:
         self._headElem = tempElem
         return value
 
+ops = {}
+ops["+"] = lambda l, r: l + r
+ops["-"] = lambda l, r: l - r
+ops["*"] = lambda l, r: l * r
+ops["/"] = lambda l, r: l / r
+
+regexOps = re.compile(r"^([\+\-\*\/])$")
+regexInts = re.compile(r"^([\d]+)$")
+
 ps = PostfixStack()
-ps.push(51)
-ps.push(43)
-print(ps.pop())
-print(ps.pop())
+
+with fileinput.input(files = ("input.txt")) as fin:
+    for line in fin:
+        for token in line.split():
+            m = regexInts.match(token)
+            if m is not None:
+                ps.push(int(m.group(1)))
+            else:
+                m = regexOps.match(token)
+                if m is not None:
+                    l = ps.pop()
+                    r = ps.pop()
+                    ps.push(ops[m.group(1)](l, r))
+                else:
+                    print("Invalid syntax")
+        print(ps.pop())
