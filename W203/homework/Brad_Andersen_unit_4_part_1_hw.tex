@@ -1,0 +1,100 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[inner=1.5cm,outer=1.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\numberwithin{equation}{subsection}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+
+\def\doubleunderline#1{\underline{\underline{#1}}}
+
+\title{Statistics for Data Science \\
+    Unit 4 Part 1 Homework: Discrete Random Variables}
+\author{Brad Andersen \\
+    W203 Section 4}
+\date{January 30, 2019}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+
+% ----- Question 1: Best Game in the Casino --------------------------------------------------------
+
+\item \textbf{Best Game in the Casino}
+
+You flip a fair coin 3 times, and get a different amount of money depending on how many heads you get. For 0 heads, you get \$0. For 1 head, you get \$2. For 2 heads, you get \$4. Your expected winnings from the game are \$6. 
+
+\begin{enumerate}
+\item How much do you get paid if the coin comes up heads 3 times?
+\end{enumerate}
+Because:
+\begin{itemize}
+    \item Our coin-flipping activities are divided into three separate \textit{trials}
+    \item Each trial flip has only two outcomes: heads or tails
+    \item Each trial flip is independent of the others
+    \item The probability of heads or tails is consistent from one trial flip to the next
+\end{itemize}
+our coin-flipping activities can be considered a \textbf{binomial experiment}.\\ \\
+Payout is based upon the number of heads resulting in the experiment: 0, 1, 2 or 3.  Probabilities can be calculated using the binomial distribution probability theorem, as follows:
+\begin{equation*}
+    b(x; n, p) =
+    \begin{cases}
+    \binom{n}{x}p^{x}(1 - p)^{n - x} & x = 0, 1, 2, \dots, n\\
+    0 & \text{otherwise}
+    \end{cases}
+\end{equation*}
+where \textit{x} represents the number of heads results, \textit{n} represents the number of trials in the experiment, and \textit{p} represents the probability of the outcome. \\ \\
+For example, calculating the probability that the experiment's results include no heads,
+\begin{equation*}
+\begin{split}
+P(X = 0) = b(0; 3, 0.5) & = \binom{3}{0}p^{0}(1 - 0.5)^{3 - 0} \\
+& = \frac{3!}{0!(3 - 0)!} \times 0.5^{0} \times 0.5^{3} \\
+& = \frac{6}{6} \times 1 \times 0.125 \\
+& = 1 \times 1 \times 0.125 \\
+& = 0.125
+\end{split}
+\end{equation*}
+Therefore, the probability mass function for the experiment is as follows: \\ \\
+\begin{tabular}{c|cccc}
+\textit{x} & 0 & 1 & 2 & 3 \\
+\hline
+\textit{p}(\textit{x}) & 0.125 & 0.375 & 0.375 & 0.125 \\
+\end{tabular} \\ \\
+Payout from the results of the experiment can be considered a function of the discrete random variable \textit{X}, itself the results of the coin-flipping experiment.  If \textit{h}(\textit{X}) is this function, it too is a random variable such that \textit{Y} = \textit{h}(\textit{X}).  The derived probability mass function for \textit{Y} is as follows: \\ \\
+\begin{tabular}{c|cccc}
+\textit{y} & \$0 & \$2 & \$4 & \$\textit{m} \\
+\hline
+\textit{p}(\textit{y}) & 0.125 & 0.375 & 0.375 & 0.125 \\
+\end{tabular} \\ \\
+where \textit{m} represents the winnings for experiment results of three heads, the winnings to be calculated.  Given that we know the expected winnings from the experiment are \$6, winnings for results of three heads can be calculated as follows:
+\begin{equation*}
+\begin{split}
+E(Y) & = E[h(X)] = \sum_{\substack{D}}h(x) \times p(x) \\
+& = \$6 = (\$0)(0.125) + (\$2)(0.375) + (\$4)(0.375) + (\textit{m})(0.125) \\
+& = \$6 = \$0 + \$0.75 + \$1.50 + (\textit{m})(0.125) \\
+& = \$3.75 = (\textit{m})(0.125) \\
+& = \$30 = \textit{m}
+\end{split}
+\end{equation*}
+Therefore, \doubleunderline{winnings for experiment results of three heads are \$30}.
+
+\begin{enumerate}
+    \item[(b)]Write down a complete expression for the cumulative probability function for your winnings from the game.
+\end{enumerate}
+\doubleunderline{\begin{equation*}
+    \textit{F}(\textit{y}) =
+    \begin{cases}
+    0.125 & 0 \le y < 1 \\
+    0.500 & 1 \le y < 2 \\
+    0.875 & 2 \le y < 3 \\
+    1 & 3 \le y
+    \end{cases}
+\end{equation*}}
+
+\end{enumerate}
+\end{document}
