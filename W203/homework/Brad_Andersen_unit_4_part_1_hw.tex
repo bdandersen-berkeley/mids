@@ -30,7 +30,7 @@
 You flip a fair coin 3 times, and get a different amount of money depending on how many heads you get. For 0 heads, you get \$0. For 1 head, you get \$2. For 2 heads, you get \$4. Your expected winnings from the game are \$6. 
 
 \begin{enumerate}
-\item How much do you get paid if the coin comes up heads 3 times?
+\item \textbf{How much do you get paid if the coin comes up heads 3 times?}
 \end{enumerate}
 Because:
 \begin{itemize}
@@ -84,7 +84,7 @@ E(Y) & = E[h(X)] = \sum_{\substack{D}}h(x) \times p(x) \\
 Therefore, \doubleunderline{winnings for experiment results of three heads are \$30}.
 
 \begin{enumerate}
-    \item[(b)]Write down a complete expression for the cumulative probability function for your winnings from the game.
+    \item[(b)] \textbf{Write down a complete expression for the cumulative probability function for your winnings from the game.}
 \end{enumerate}
 \begin{equation*}
     \textit{F}(\textit{y}) =
@@ -96,6 +96,8 @@ Therefore, \doubleunderline{winnings for experiment results of three heads are \
     \end{cases}
 \end{equation*} \\
 
+% ----- Question 2: Reciprocal Dice  --------------------------------------------------------
+
 \item \textbf{Reciprocal Dice}
 
 Let $X$ be a random variable representing the outcome of rolling a 6-sided die.  Before the die is rolled, you are given two options:
@@ -105,7 +107,7 @@ Let $X$ be a random variable representing the outcome of rolling a 6-sided die. 
 \item You wait until the die is rolled, then get $1/X$ in dollars.
 \end{enumerate}
 
-Which option is better for you, in expectation? \\ \\
+\textbf{Which option is better for you, in expectation?} \\ \\
 The probability mass function for a fair six-sided die is as follows: \\ \\
 \begin{tabular}{c|cccccc}
 \textit{x} & 1 & 2 & 3 & 4 & 5 & 6 \\
@@ -129,8 +131,62 @@ Die roll & 1 & 2 & 3 & 4 & 5 & 6 \\
 \hline
 Calculated payout & \$1.00 & \$0.50 & \$0.33 & \$0.25 & \$0.20 & \$0.17 \\
 \end{tabular} \\ \\
-The payout prior to the rolling of the die (\$0.29) is equidistant from the payouts associated with rolling a 3 (\$0.33) and a 4 (\$0.25).  Given that the probability of rolling any one side of the die is equivalent, one would be just as likely to roll a die value associated with a payout \textit{greater than} \$0.29 as \textit{less than} \$0..29.  However, payouts associated with die rolls of 1 or 2 are further from \$0.29 than payouts associated with die rolls of 5 or 6.  Therefore, one could potentially maximize gains (or minimize losses) by selecting option b), \doubleunderline{waiting until the die is rolled and collecting $1/X$ dollars}.
+The payout prior to the rolling of the die (\$0.29) is equidistant from the payouts associated with rolling a 3 (\$0.33) and a 4 (\$0.25).  Given that the probability of rolling any one side of the die is equivalent, one would be just as likely to roll a die value associated with a payout \textit{greater than} \$0.29 as \textit{less than} \$0..29.  However, payouts associated with die rolls of 1 or 2 are further from \$0.29 than payouts associated with die rolls of 5 or 6.  Therefore, one could potentially maximize gains (or minimize losses) by selecting option b), \doubleunderline{waiting until the die is rolled and collecting $1/X$ dollars}. \\
 
+% ----- Question 3: The Baseline for Measuring Deviations  ---------------------------------
+
+\item \textbf{The Baseline for Measuring Deviations}
+
+Given any random variable $X$ and a real number $t$, we can define another random variable $Y = (X - t)^2$. In other words, for any random variable $X$, we can choose a real number, $t$, as a baseline and calculate the squared deviation of $X$ away from $t$.
+
+You might wonder why we often square deviations (instead of taking an absolute value, or cubing them, etc.).  This exercise will shed some light on why this is a natural choice.
+
+\begin{enumerate}
+\item \textbf{Write down an expression for $E(Y)$ and simplify it as much as you can.  Even though we haven't proved this yet, you can use the fact that for any two random variables, $A$ and $B$, $E(A + B) = E(A) + E(B)$.}
+\end{enumerate}
+Given $Y = (X - t)^2$, expression $E(Y)$'s simplification is as follows:
+\begin{equation*}
+\begin{split}
+E[h(X)] & = \sum_{\substack{D}}h(x) \times p(x) \\
+& = E[(X - t)(X - t)]\\
+& = E[X^2 - 2Xt + t^2] \\
+& = E[X^2] - E[2Xt] + E[t^2] \\
+& = E[X^2] - 2E[Xt] + E[t^2] \\
+& = \doubleunderline{E[X^2] - 2tE[X] + t^2} \\
+\end{split}
+\end{equation*}
+\begin{enumerate}
+\item[(b)] \textbf{Taking a partial derivative with respect to $t$, compute the value of $t$ that minimizes $E(Y)$.  (Hint: Your answer should be a very familiar value)}
+\end{enumerate}
+The partial derivative with respect to $t$ can be calculated as follows:
+\begin{equation*}
+\begin{split}
+\dfrac{\delta f}{\delta t}(E[X^2] - 2tE[X] + t^2) & = \dfrac{\delta f}{\delta t}(E[X^2]) + \dfrac{\delta f}{\delta t}(2tE[X]) + \dfrac{\delta f}{\delta t}(t^2) \\
+& = 0 - 2E[X] + 2t \\
+& = 2t - 2E[X] \\
+\end{split}
+\end{equation*}
+Knowing that $Y$ (i.e. $(X - t)^2$) must be greater than or equal to 0, calculating $t$ to minimize $E(Y)$ is as follows:
+\begin{equation*}
+\begin{split}
+0 & = 2t - 2E[X] \\
+-2t & = -2E[X] \\
+t & = \doubleunderline{E[X]}  \\
+\end{split}
+\end{equation*}
+\begin{enumerate}
+\item[(c)] \textbf{What is the value of $E(Y)$ for this choice of $t$?
+(Hint: this should also be a very familiar value)}
+\end{enumerate}
+Substituting $E[X]$ for $t$, calculating $E(Y)$ is as follows:
+\begin{equation*}
+\begin{split}
+E[Y] & = E[X^2] - 2tE[X] + t^2 \\
+& = E[X^2] - 2(E[X])(E[X]) + E[X^2] \\
+& = 2E[X^2] - 2E[X^2] \\
+& = \doubleunderline{0}  \\
+\end{split}
+\end{equation*}
 
 \end{enumerate}
 \end{document}
