@@ -86,7 +86,7 @@ Therefore, \doubleunderline{winnings for experiment results of three heads are \
 \begin{enumerate}
     \item[(b)]Write down a complete expression for the cumulative probability function for your winnings from the game.
 \end{enumerate}
-\doubleunderline{\begin{equation*}
+\begin{equation*}
     \textit{F}(\textit{y}) =
     \begin{cases}
     0.125 & 0 \le y < 1 \\
@@ -94,7 +94,43 @@ Therefore, \doubleunderline{winnings for experiment results of three heads are \
     0.875 & 2 \le y < 3 \\
     1 & 3 \le y
     \end{cases}
-\end{equation*}}
+\end{equation*} \\
+
+\item \textbf{Reciprocal Dice}
+
+Let $X$ be a random variable representing the outcome of rolling a 6-sided die.  Before the die is rolled, you are given two options:
+
+\begin{enumerate}
+\item You get $1/E(X)$ in dollars right away.
+\item You wait until the die is rolled, then get $1/X$ in dollars.
+\end{enumerate}
+
+Which option is better for you, in expectation? \\ \\
+The probability mass function for a fair six-sided die is as follows: \\ \\
+\begin{tabular}{c|cccccc}
+\textit{x} & 1 & 2 & 3 & 4 & 5 & 6 \\
+\hline
+\textit{p}(\textit{x}) & 1/6 & 1/6 & 1/6 & 1/6 & 1/6 & 1/6 \\
+\end{tabular} \\ \\
+Therefore, the expected value of random variable $X$ can be calculated as follows:
+\begin{equation*}
+\begin{split}
+E(X) & = \sum_{\substack{x \in D}}x \times p(x) \\
+& = (1)(1/6) + (2)(1/6) + (3)(1/6) + (4)(1/6) + (5)(1/6) + (6)(1/6)\\
+& = 1/6 + 1/3 + 1/2 + 2/3 + 5/6 + 1 \\
+& = 21/6 \\
+& = 3.50
+\end{split}
+\end{equation*} \\
+Given that the expected value of $X$ is 3.50, $1/E(X)$ equals approximately 0.2857.  Rounding to the nearest cent, one would receive \$0.29 if option a) were chosen prior to the rolling of the die. \\ \\
+Given that the die is fair, each of its six sides has an equal probability of appearing when the die is rolled; the probability that any side appears is therefore 1/6, as shown in the probability mass function, above.  If one were to receive $1/X$ dollars representing the roll of the die, payouts for each of the die's six sides (rounded to the nearest cent) are as follows: \\ \\
+\begin{tabular}{r|cccccc}
+Die roll & 1 & 2 & 3 & 4 & 5 & 6 \\
+\hline
+Calculated payout & \$1.00 & \$0.50 & \$0.33 & \$0.25 & \$0.20 & \$0.17 \\
+\end{tabular} \\ \\
+The payout prior to the rolling of the die (\$0.29) is equidistant from the payouts associated with rolling a 3 (\$0.33) and a 4 (\$0.25).  Given that the probability of rolling any one side of the die is equivalent, one would be just as likely to roll a die value associated with a payout \textit{greater than} \$0.29 as \textit{less than} \$0..29.  However, payouts associated with die rolls of 1 or 2 are further from \$0.29 than payouts associated with die rolls of 5 or 6.  Therefore, one could potentially maximize gains (or minimize losses) by selecting option b), \doubleunderline{waiting until the die is rolled and collecting $1/X$ dollars}.
+
 
 \end{enumerate}
 \end{document}
