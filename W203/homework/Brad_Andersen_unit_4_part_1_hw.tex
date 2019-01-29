@@ -71,7 +71,7 @@ Payout from the results of the experiment can be considered a function of the di
 \hline
 \textit{p}(\textit{y}) & 0.125 & 0.375 & 0.375 & 0.125 \\
 \end{tabular} \\ \\
-where \textit{m} represents the winnings for experiment results of three heads, the winnings to be calculated.  Given that we know the expected winnings from the experiment are \$6, winnings for results of three heads can be calculated as follows:
+where \textit{m} represents the winnings for experiment results of three heads, the winnings to be calculated.  Given that we know the expected winnings from the experiment are \$6, winnings for results of three heads (here represented using $m$) can be calculated as follows:
 \begin{equation*}
 \begin{split}
 E(Y) & = E[h(X)] = \sum_{\substack{D}}h(x) \times p(x) \\
@@ -188,5 +188,30 @@ E[Y] & = E[X^2] - 2tE[X] + t^2 \\
 \end{split}
 \end{equation*}
 
+% ----- Question 4: Optional Advanced Exercise: Heavy Tails  ---------------------------------
+
+\item \textbf{Optional Advanced Exercise: Heavy Tails}
+
+One reason to study the mathematical foundation of statistics is to recognize situations where common intuition can break down.  An unusual class of distributions are those we call \textit{heavy-tailed}.  The exact definition varies, but we'll say that a heavy-tailed distribution is one for which not all moments are finite.  Consider a random variable $M$ with the following pmf:
+
+$$p_M(x) = \begin{cases}
+c/x^3, &x \in \{1,2,3,...\}\\
+0, &otherwise.\\
+\end{cases}
+$$
+
+where $c$ is a constant (you can calculate its value if you like, but it's not important).
+
+\begin{enumerate}
+\item \textbf{Is $E(M)$ finite?}
+\item \textbf{Is $var(M)$ finite?}
+\end{enumerate}
+
+No - neither $E(M)$ nor $var(M)$ is finite.  Given that:
+\begin{itemize}
+    \item $x$ is within the set of all integers greater than 0, and
+    \item $p_M(x)$ is an exponential function
+\end{itemize}
+The probability of $x$ decreases at an exponentially smaller rate as the value of $x$ increases.  Therefore, the expected value of $M$ will change without bound.  Because the mean of $M$ never ceases to change, neither does its variance.
 \end{enumerate}
 \end{document}
