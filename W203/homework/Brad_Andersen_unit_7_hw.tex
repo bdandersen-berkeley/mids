@@ -12,127 +12,95 @@
 \def\doubleunderline#1{\underline{\underline{#1}}}
 
 \title{Statistics for Data Science \\
-    Unit 3 Homework: Probability Theory}
+    Unit 7 Homework}
 \author{Brad Andersen \\
     W203 Section 4}
-\date{January 23, 2019}
+\date{February 26, 2019}
 
 \begin{document}
 
 \maketitle
 
 \begin{enumerate}
+% ----- Question 1: The Meat --------------------
 
-% ----- Question 1: Gas Station Analytics ---------------------------------------------------
-
-\item \textbf{Gas Station Analytics}
-At a certain gas station, 40\% of customers use regular gas (event R), 35\% use mid-grade (event M), and 25\% use premium (event P).  Of the customers that use regular gas, 30\% fill their tanks (Event F).  Of the customers that use mid-grade gas, 60\% fill their tanks, while of those that use premium, 50\% fill their tanks.  Assume that each customer is drawn independently from the entire pool of customers.
-
-\begin{table}[h]
-\centering
-\begin{tabular}{lll}
-    $P(R) = 0.40$ & $P(M) = 0.35$ & $P(P) = 0.25$ \\
-    $P(F|R) = 0.30$ & $P(F|M) = 0.60$ & $P(F|P) = 0.50$ \\
-\end{tabular}
-\caption{Known probabilities: Gas Station Analytics}
-\end{table}
-
+\item[]\textbf{The Meat} \\ \\
+Suppose that Americans consume an average of 2 pounds of ground beef per month.
 \begin{enumerate}
-\item What is the probability that the next customer will request regular gas and fill the tank? \\ \\
-$P(F|R) = \dfrac{P(F \cap R)}{P(R)}$ , therefore $P(F \cap R) = P(R) \times P(F|R)$ \\ \\
-$P(F \cap R) = 0.40 \times 0.30$ \\ \\
-$P(F \cap R) = 0.12$ \\ \\
-Probability: $\doubleunderline{0.12}$ \\
-
-\item What is the probability that the next customer will fill the tank? \\ \\
-$(P(F|R) \times P(R)) + (P(F|M) \times P(M)) + (P(F|P) \times P(P))$ \\ \\
-$(0.30 \times 0.40) + (0.60 \times 0.35) + (0.50 \times 0.25)$ \\ \\
-$(0.12) + (0.21) + (0.125)$ \\ \\
-Probability: $\doubleunderline{0.455}$ \\
-
-\item Given that the next customer fills the tank, what is the conditional probability that they use regular gas? \\ \\
-Let event T ("next customer fills tank") = 0.455. \\ \\
-$P(R|T) = \dfrac{P(R \cap T)}{P(T)}$ , therefore $P(R|T) = \dfrac{P(T \cap R)}{P(T)}$ \\ \\
-$P(R|T) = \dfrac{P(T|R) \times P(R)}{P(T)}$ \\ \\
-$P(R|T) = \dfrac{0.30 \times 0.40}{0.455}$ \\ \\
-$P(R|T) = \dfrac{0.12}{0.455}$ \\ \\
-Probability: $\doubleunderline{0.264}$ \\
-
+\item[(a)]
+Do you expect the distribution of this measure (ground beef consumption per capita per month) to be approximately normal? Why or why not?
 \end{enumerate}
+Assuming that the "Americans" referenced in the question represents a population and not a sample, \doubleunderline{no}, I do not expect the distribution of this measure to be normal.  Because of the Central Limit Theorem, we can expect \textit{sample} distributions to be normal, provided the sample size is sufficiently large (i.e. $n > 30$).  However, the Central Limit Theorem does not hold for \textit{population} distributions.
+\begin{enumerate}
+\item[(b)]
+Suppose you want to take a sample of 100 people. Do you expect the distribution of the sample mean to be approximately normal? Why or why not?
+\end{enumerate}
+\doubleunderline{Yes}, I expect the distribution of the sample mean to be approximately normal because of the Central Limit Theorem.  Two criteria associated with anticipating a normal distribution are satisfied: the 100 people are a selected \textit{sample} and are not the population, and the sample size is greater than 30.
+\begin{enumerate}
+\item[(c)]
+You take a random sample of 100 Berkeley students to find out if their monthly ground beef consumption is any different than the nation at large.  The mean among your sample is 2.45 pounds and the sample standard deviation is 2 pounds. What is the 95\% confidence interval for Berkeley students?
+\end{enumerate}
+The 95\% confidence interval for the sample can be calculated using the following equation: \\
+$$ \big( \bar{X} -1.96 \cdot \frac{\sigma}{\sqrt{n}}, \bar{X} +1.96 \cdot \frac{\sigma}{\sqrt{n}} \big) $$ \\
+Substituting values for the sample mean, standard deviation and size:
+$$ \big( 2.45 -1.96 \cdot \frac{2}{\sqrt{100}}, 2.45 +1.96 \cdot \frac{2}{\sqrt{100}} \big) $$ \\
+The confidence interval is as follows: \\
+$$ \doubleunderline{\big( 2.058, 2.842 \big)} $$
 
-% ----- Question 2: The Toy Bin -------------------------------------------------------------
+% ----- Question 2: GRE Scores --------------------
 
-\item \textbf{The Toy Bin}
-
- In a collection of toys, $1/2$ are red, $1/2$ are waterproof, and $1/3$ are cool. $1/4$ are red and waterproof.  $1/6$ are red and cool. $1/6$ are waterproof and cool. $1/6$ are neither red, waterproof, nor cool. Each toy has an equal chance of being selected.
+\item[]\textbf{GRE Scores} \\ \\
+Assume we are analyzing MIDS students' GRE quantitative scores. We want to construct a $95\%$ confidence interval, but we *naively* uses the famous 1.96 threshold as follows:
+\\
+$$ \big( \bar{X} -1.96 \cdot \frac{s}{\sqrt{n}}, \big( \bar{X} +1.96 \cdot \frac{s}{\sqrt{n}} \big) $$
+\\
+What is the real confidence level for the interval we have made, if the sample size is 10?  What if the sample size is 200? 
  
-\begin{table}[h]
-\centering
-\begin{tabular}{lll}
-    $P(R)$ = red toy & $P(W)$ = waterproof toy & $P(C)$ = cool toy \\
-\end{tabular}
-\caption{Probability definitions: The Toy Bin}
-\end{table}
- \begin{enumerate}
-\item Draw an area diagram to represent these events. \\ \\
-\includegraphics{images/unit3-q2_toybin-venn.png} \\ 
+% ----- Question 3: Maximum Likelihood Estimation for an Exponential Distribution 
 
-\item What is the probability of getting a red, waterproof, cool toy? \\ \\
-Given that the probability of a toy being neither red nor waterproof nor cool is 1/6, the probability for the union of the probabilities of a toy being red or waterproof or cool is 1 - 1/6, or 5/6.  The value that must be calculated is the intersection of red, waterproof and cool in the Venn diagram, above. \\ \\
-$\frac{5}{6} = P(R) + P(W) + P(C) - P(R \cap W) - P(R \cap C) - P(C \cap W) + P(R \cap W \cap C)$ \\ \\
-$\frac{5}{6} = \frac{1}{2} + \frac{1}{2} + \frac{1}{3} - \frac{1}{4} - \frac{1}{6} - \frac{1}{6} + P(R \cap W \cap C)$ \\ \\
-$\frac{5}{6} = \frac{3}{4} + P(R \cap W \cap C)$ \\ \\
-$\frac{1}{12} = P(R \cap W \cap C)$ \\ \\
-Probability: $\doubleunderline{\frac{1}{12}}$ \\
+\item[]\textbf{Maximum Likelihood Estimation for an Exponential Distribution}
 
-\item You pull out a toy at random and you observe only the color, noting that it is red.  Conditional on just this information, what is the probability that the toy is not cool? \\ \\
-Probability = $P(R) - P(R \cap C)$ \\ \\
-Probability = $\frac{1}{2} - \frac{1}{6}$ \\ \\
-Probability = $\frac{6}{12} - \frac{2}{12}$ \\ \\
-Probability = $\frac{4}{12} = \doubleunderline{\frac{1}{3}}$ \\
+A Poisson process is a simple model that statisticians use to describe how events occur over time.  Imagine that time stretches out on the x-axis, and each event is a single point on this axis.
 
-\item Given that a randomly selected toy is red or waterproof, what is the probability that it is cool? \\ \\
-The following calculation assumes that "red or waterproof" does not mean that these are mutually exclusive events.  Rather, I am interpreting "red or waterproof" to mean that the selected toy can be both red and waterproof. \\ \\
-Probability = $P(R \cap C) + P(W \cap C) - P(R \cap W \cap C)$ \\ \\
-Probability = $\frac{1}{6} + \frac{1}{6} - \frac{1}{12}$ \\ \\
-Probability = $\frac{3}{12} = \doubleunderline{\frac{1}{4}}$
-\end{enumerate}
- 
-% ----- Question 3: The Overlap of Two Events -------------------------------------------
+![Events over time](poisson.png)
 
-\item \textbf{On the Overlap of Two Events}
-Suppose for events A and B, $P(A) = 1/2$, $P(B) = 2/3$, but we have no more information about the events.
- \begin{enumerate}
-\item What are the maximum and minimum possible values for $P(A \cap B)$? \\ \\
-The following diagram represents the intersections of $P(A)$ and $P(B)$ as probabilities in $S$: \\ \\
-\includegraphics{images/unit3-q3_min-max-area.png}
+The key feature of a Poisson process is that it is *memoryless*.  Loosely speaking, the probability that an event occurs in any (differentially small) instant of time is a constant.  It doesn't depend on how long ago the previous event was, nor does it depend on when future events occur.  Statisticians might use a Poisson process (or more complex variations) to represent:
 
-Given that the probability of $S$ is 1, the maximum and minimum values for $P(A \cap B)$ are $\doubleunderline{\frac{1}{2}}$ and $\doubleunderline{\frac{1}{6}}$, respectively. \\ \\
-\item What are the maximum and minimum possible values for $P(A|B)$? \\ \\
-Given the definition of conditional probability: \\ \\ 
-$P(A|B) = \dfrac{P(A \cap B)}{P(B)}$ \\ \\
-Maximum and minimum values can be calculated as follows: \\ \\
-Maximum: $P(A|B) = \dfrac{\frac{1}{2}}{\frac{2}{3}} = \doubleunderline{\frac{3}{4}}$ \\ \\
-Minimum: $P(A|B) = \dfrac{\frac{1}{6}}{\frac{2}{3}} = \doubleunderline{\frac{1}{4}}$
-\end{enumerate}
+- The scoring of goals in a world cup match
+- The arrival of packets to an internet router
+- The arrival of customers to a website
+- The failure of servers in a cluster
+- The time between large meteors hitting the Earth
 
-% ----- Question 4: Can't Please Everyone! ---------------------------------------------
+In live session, we described a Poisson random variable, a discrete random variable that represents the number of events of a Poisson process that occur in a fixed length of time.  However, a Poisson process can be used to generate other random variables.
 
-\item \textbf{Can't Please Everyone!}
-Among Berkeley students who have completed w203, $3/4$ like statistics.  Among Berkeley students who have not completed w203, only $1/4$ like statistics.  Assume that only 1 out of 100 Berkeley students completes w203.  Given that a Berkeley student likes statistics, what is the probability that they have completed w203? \\ \\
-\begin{table}[h]
-\centering
-\begin{tabular}{lll}
-    $P(C)$ = completed W203 & $P(N)$ = not completed W203 & $P(L)$ = like statistics \\
-    $P(C)$ = 0.01 & $P(N)$ = 0.99 &
-\end{tabular}
-\caption{Probability definitions: Can't Please Everyone!}
-\end{table} \\
-$P(L|C) = \dfrac{P(L \cap C)}{P(C)}$ \\ \\
-$P(L \cap C) = P(L|C) \times P(C)$ \\ \\
-$P(L \cap C) = 0.75 \times 0.01$ \\ \\
-$P(L \cap C) = 0.0075$ \\ \\
-Probability = $\doubleunderline{0.0075}$
+Another famous random variable is the exponential random variable, which represents the time between events in a Poisson process.  For example, if we set up a camera at a particular intersection and record the times between car arrivals, we might model our data using an exponential random variable.
 
+The exponential random variable has a well-known probability density function,
+
+$$ f(x|\lambda) = \lambda e^{-\lambda x} $$
+
+Here, $\lambda$ is a parameter that represents the rate of events.
+
+Suppose we record a set of times between arrivals at our intersection, $x_1, x_2, ... x_n$.  We assume that these are independent draws from an exponential distribution and we wish to estimate the rate parameter $\lambda$ using maximum likelihood.
+
+Do this using the following steps:
+
+a. Write down the likelihood function, $L(\lambda)$.  Hint: We want the probility (density) that the data is exactly $x_1, x_2,...,x_n$.  Since the times are independent, this is the probability (density) that $X_1 = x_1$, times the probability (density) that $X_2 = x_2$, and so on.
+
+b. To make your calculations easier, write down the log of the likelihood, and simplify it.
+
+c. Take the derivative of the log of likelihood, set it equal to zero, and solve for $\lambda$.  How is it related to the mean time between arrivals?
+
+d. Suppose you get the following vector of times between cars:
+
+```{r}
+times = c(2.65871285, 8.34273228, 5.09845548, 7.15064545,
+          0.39974647, 0.77206050, 5.43415199, 0.36422211,
+          3.30789126, 0.07621921, 2.13375997, 0.06577856,
+          1.73557740, 0.16524304, 0.27652044)
+```
+
+Use R to plot the likelihood function.   Then use optimize to approximate the maximum likelihood estimate for $\lambda$.  How does your answer compare to your solution from part c?
 \end{enumerate}
 \end{document}
