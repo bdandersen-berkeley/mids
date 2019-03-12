@@ -14,3 +14,15 @@ Create a data frame with only columns required for the analysis, providing great
 q5 <- data.frame(A$race, A$turnout16, A$turnout18, A$reg, A$whenreg, A$birthyr)
 summary(q5)
 ```
+
+Remove rows that have data associated with no response from the subject
+``` {r}
+q5 <- q5[q5$A.race != -7 & q5$A.reg != -7 & q5$A.whenreg != -1,]
+summary(q5)
+nrows(q5)
+```
+
+Because we're concerned that we may be excluding a large number of subjects who could have voted in the 2016 election because their birthdays fell before or on the day of the election, identify the number of subjects born in 1998 that potentially could have registered to vote in 1998.
+``` {r}
+nrow(q5[q5$A.birthyr == 1998 & (q5$A.whenreg == 2 | q5$A.whenreg == 3),])
+```
