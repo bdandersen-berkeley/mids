@@ -1,0 +1,16 @@
+Install the dplyr library and its dependencies
+``` {r}
+install.packages("dplyr")
+```
+
+Load the ANES data for analysis
+``` {r}
+setwd(".")
+read.csv("./master/anes_pilot_2018.csv")
+```
+
+Create a data frame with only columns required for the analysis, providing greater ease with which to analyze the data as well as facilitating visibility into data using functionality associated with data.frame objects
+``` {r}
+q5 <- data.frame(A$race, A$turnout16, A$turnout18, A$reg, A$whenreg, A$birthyr)
+summary(q5)
+```
