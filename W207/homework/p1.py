@@ -6,7 +6,7 @@
 import time
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.ticker import MultipleLocator
+from matplotlib.ticker import MultipleLocator 
 from sklearn.pipeline import Pipeline
 from sklearn.datasets import fetch_openml
 from sklearn.neighbors import KNeighborsClassifier
