@@ -18,6 +18,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
 
+
 # Set the randomizer seed so results are the same each time.
 np.random.seed(0)
 
@@ -48,8 +49,10 @@ dev_data, dev_labels = X[60000:61000], Y[60000:61000]
 train_data, train_labels = X[:60000], Y[:60000]
 mini_train_data, mini_train_labels = X[:1000], Y[:1000]
 
-# ----------
 
+# -------------------------------------------------------------------------------- Question 1 -----
+
+'''
 def get_example_digit_indices(digit_list, num_examples = 10):
     """
     Retrieves randomly-selected indices within MNIST data identifying digits 0 through 9.
@@ -147,3 +150,53 @@ for i in range(0, 10):
         )
 
 plt.show()
+'''
+
+# -------------------------------------------------------------------------------- Question 2 -----
+
+def P2(k_values):
+    """
+    Evaluates KNearestNeighbor classifier accuracy using models trained on "mini" data set.
+
+    Arguments
+    ---------
+    k_values: list
+
+    List of k values with which to create and evaluate KNearestNeighbor classifiers
+    """
+
+    assert (type(k_values) is list), "k_values must be of type list"
+    assert (len(k_values) > 0), "k_values list must not be empty"
+
+    # Iterate over the list of k values, creating and evaluating the accuracy of 
+    # K-nearest-neighbor classifiers for each value of k
+    k_list = list()
+    accuracy_list = list()
+    k1_predicted = None
+    for k in k_values:
+        classifier = KNeighborsClassifier(n_neighbors = k)
+        classifier.fit(X = mini_train_data, y = mini_train_labels)
+        k_list.append(str(k))
+        accuracy_list.append(classifier.score(X = dev_data, y = dev_labels))
+        if (k == 1):
+            k1_predicted = classifier.predict(X = dev_data)
+
+    # Plot the data using a horizontal histogram
+    fig, ax = plt.subplots()
+    xlim_minimum = min(accuracy_list) * 0.99
+    ax.set(
+        xlim = [xlim_minimum, max(accuracy_list) * 1.01],
+        title = "KNearest Neighbor Classifier Accuracy\n(Train: mini, Test: dev)",
+        xlabel = "Mean Accuracy",
+        ylabel = "Neighbors (k)"
+    )
+    for i, accuracy in enumerate(accuracy_list):
+        ax.text(xlim_minimum + (accuracy - xlim_minimum) / 2, y = i, s = accuracy, color = "white")
+    ax.barh(k_list, accuracy_list)
+    plt.show()
+
+    print(classification_report(dev_labels, k1_predicted))
+
+
+k_values = [1, 3, 5, 7, 9]
+P2(k_values)
