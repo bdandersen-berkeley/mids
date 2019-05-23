@@ -18,7 +18,6 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
 
-
 # Set the randomizer seed so results are the same each time.
 np.random.seed(0)
 
@@ -48,7 +47,6 @@ test_data, test_labels = X[61000:], Y[61000:]
 dev_data, dev_labels = X[60000:61000], Y[60000:61000]
 train_data, train_labels = X[:60000], Y[:60000]
 mini_train_data, mini_train_labels = X[:1000], Y[:1000]
-
 
 # -------------------------------------------------------------------------------- Question 1 -----
 
@@ -154,6 +152,7 @@ plt.show()
 
 # -------------------------------------------------------------------------------- Question 2 -----
 
+'''
 def P2(k_values):
     """
     Evaluates KNearestNeighbor classifier accuracy using models trained on "mini" data set.
@@ -195,8 +194,99 @@ def P2(k_values):
     ax.barh(k_list, accuracy_list)
     plt.show()
 
+    # Print the classification report showing the performance of the k=1 classifier for each digit
+    # represented in the development data set
     print(classification_report(dev_labels, k1_predicted))
 
 
 k_values = [1, 3, 5, 7, 9]
 P2(k_values)
+'''
+
+# -------------------------------------------------------------------------------- Question 3 -----
+
+def P3(train_sizes, accuracies):
+    """
+    Trains, evaluates accuracy, and performs MNIST data predictions using specified training set
+    sizes.
+
+    A KNearestNeighbor classifier with k = 1 is used for each training set size.
+
+    Arguments
+    ---------
+    train_sizes: list
+
+    Integer list of sizes of various training data sets with which to train that classifier
+
+    accuracies: list
+
+    List with no elements.  P3 returns classifier accuracy and elapsed time for predictions in the
+    form of a two-element tuple -- one tuple per training set size evaluated.  Elements of each
+    tuple are classifier accuracy and elapsed time of prediction in seconds.
+    """
+
+    assert (type(train_sizes) is list), "train_sizes must be of type list"
+    assert (len(train_sizes) > 0), "train_sizes must not be empty"
+    assert (all(isinstance(train_size, int) for train_size in train_sizes)), "train_sizes list must contain only integers"
+    assert (type(accuracies) is list), "accuracies must be of type list"
+    assert (len(accuracies) == 0), "accuracies must be empty"
+
+    # Iterate through the list of training data sizes, building and evaluating KNearestNeighbor
+    # classifiers of the specified sizes
+    for train_size in train_sizes:
+
+        # Identify the training data set
+        cur_train_data, cur_train_labels = X[:train_size], Y[:train_size]
+
+        # Create and train/fit the KNearestNeighbor classifier using k = 1
+        cur_classifier = KNeighborsClassifier(n_neighbors = 1)
+        cur_classifier.fit(X = cur_train_data, y = cur_train_labels)
+
+        # Calculate the classifier's accuracy
+        cur_accuracy = cur_classifier.score(X = dev_data, y = dev_labels)
+
+        # Perform predictions using test data, and calculate each prediction's elapsed time
+        time_begin = time.time()
+        cur_classifier.predict(X = dev_data)
+        seconds_elapsed = time.time() - time_begin
+
+        # Append the accuracy-elapsed time tuple to the specified "accuracies" list
+        accuracies.append((cur_accuracy, seconds_elapsed))
+
+train_sizes = [100, 200, 400, 800, 1600, 3200, 6400, 12800, 25000]
+accuracies = []
+P3(train_sizes, accuracies)
+
+# Create lists from each tuple returned by P3
+accuracy_list = [accuracy[0] for accuracy in accuracies]
+elapsed_time_list = [round(accuracy[1], 3) for accuracy in accuracies]
+
+# Create and render the horizontal histogram for classifier accuracies
+fig, ax = plt.subplots()
+xlim_minimum = min(accuracy_list) * 0.9
+ax.set(
+    xlim = [xlim_minimum, max(accuracy_list) * 1.01],
+    title = "KNearest Neighbor Classifier Accuracy\n(Train: <variable>, Test: dev)",
+    xlabel = "Mean Accuracy",
+    ylabel = "Training Size"
+)
+for i, accuracy in enumerate(accuracy_list):
+    ax.text(xlim_minimum + (accuracy - xlim_minimum) / 2, y = i, s = accuracy)
+ax.barh([str(train_size) for train_size in train_sizes], accuracy_list)
+plt.show()
+
+# Create and render the horizontal histogram for classifiers' prediction's elapsed times
+fig, ax = plt.subplots()
+ax.set(
+    xlim = [0, max(elapsed_time_list) * 1.01],
+    title = "KNearest Neighbor Predictions - Elapsed Times\n(Train: <variable>, Test: dev)",
+    xlabel = "Elapsed Time (Seconds)",
+    ylabel = "Training Size"
+)
+for i, elapsed_time in enumerate(elapsed_time_list):
+    if (elapsed_time < 5):
+        ax.text(elapsed_time + 1, y = i, s = elapsed_time)
+    else:
+        ax.text(xlim_minimum + (elapsed_time - xlim_minimum) / 2, y = i, s = elapsed_time)
+ax.barh([str(train_size) for train_size in train_sizes], elapsed_time_list)
+plt.show()
