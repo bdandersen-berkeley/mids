@@ -271,7 +271,7 @@ ax.set(
     ylabel = "Training Size"
 )
 for i, accuracy in enumerate(accuracy_list):
-    ax.text(xlim_minimum + (accuracy - xlim_minimum) / 2, y = i, s = accuracy)
+    ax.text(xlim_minimum + (accuracy - xlim_minimum) / 2, y = i, s = accuracy, color = "white")
 ax.barh([str(train_size) for train_size in train_sizes], accuracy_list)
 plt.show()
 
@@ -284,9 +284,14 @@ ax.set(
     ylabel = "Training Size"
 )
 for i, elapsed_time in enumerate(elapsed_time_list):
-    if (elapsed_time < 5):
+    if (elapsed_time < 10):
         ax.text(elapsed_time + 1, y = i, s = elapsed_time)
     else:
-        ax.text(xlim_minimum + (elapsed_time - xlim_minimum) / 2, y = i, s = elapsed_time)
+        ax.text(
+            xlim_minimum + (elapsed_time - xlim_minimum) / 2, 
+            y = i, 
+            s = elapsed_time,
+            color = "white"
+        )
 ax.barh([str(train_size) for train_size in train_sizes], elapsed_time_list)
 plt.show()
