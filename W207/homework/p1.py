@@ -204,7 +204,7 @@ P2(k_values)
 '''
 
 # -------------------------------------------------------------------------------- Question 3 -----
-
+'''
 def P3(train_sizes, accuracies):
     """
     Trains, evaluates accuracy, and performs MNIST data predictions using specified training set
@@ -294,4 +294,115 @@ for i, elapsed_time in enumerate(elapsed_time_list):
             color = "white"
         )
 ax.barh([str(train_size) for train_size in train_sizes], elapsed_time_list)
+plt.show()
+'''
+
+# -------------------------------------------------------------------------------- Question 5 -----
+'''
+# def P5():
+
+# Create and train/fit the KNearestNeighbor classifier using k = 1
+classifier = KNeighborsClassifier(n_neighbors = 1)
+classifier.fit(X = train_data, y = train_labels)
+predicted = classifier.predict(X = dev_data)
+print(classification_report(dev_labels, predicted))
+
+confusion_mx = confusion_matrix(dev_labels, predicted)
+print(confusion_mx)
+
+for i in range(len(dev_labels)):
+    if (dev_labels[i] != predicted[i]):
+        print("Index:", i, "Actual:", dev_labels[i], "Predicted:", predicted[i])
+
+   # Create the 10 x 10 grid of axes (i.e. subplots for each digit image)
+    fig, ax = plt.subplots(nrows = 10, ncols = 3)
+
+    # Iterate through the list of lists, rendering each digit image associated with the current
+    # index.  An assumption is made that each image is represented using 784 values (a matrix of
+    # 28 x 28) between 0 and 1, inclusive.
+    for i in range(0, 10):
+        for j in range(0, 3):
+            ax[i][j].axis("off")
+            ax[i][j].imshow(
+                X = np.reshape(X[95], (28, 28)),
+                aspect = "auto",
+                cmap = plt.get_cmap("Greys")
+            )
+
+    plt.show()
+'''
+
+# -------------------------------------------------------------------------------- Question 6 -----
+
+def get_valid_neighbor_coordinates(pixel, dimension = (28, 28)):
+    """
+    Retrieves a list of coordinates adjacent to the specified pixel.
+    """
+    
+    assert (type(pixel) == tuple), "pixel must be of type tuple"
+    assert (type(pixel[0]) == int and type(pixel[1]) == int), "pixel coordinates must be integers"
+    assert (pixel[0] >= 0 and pixel[1] >= 0), "pixel coordinates must be greater than 0"
+    
+    assert (type(dimension) == tuple), "dimension must be of type tuple"
+    assert (type(dimension[0]) == int and type(dimension[1]) == int), "dimension coordinates must be integers"
+    assert (dimension[0] >= 0 and dimension[1] >= 0), "dimension coordinates must be greater than 0"
+    
+    assert (pixel[0] < dimension[0] and pixel[1] < dimension[1]), "pixel coordinates must be within dimension bounds"
+
+    col_neighbors = [pixel[0] - 1, pixel[0], pixel[0] + 1]
+    row_neighbors = [pixel[1] - 1, pixel[1], pixel[1] + 1]
+    
+    if (col_neighbors[2] > dimension[0] - 1):
+        del col_neighbors[2]
+    if (col_neighbors[0] < 0):
+        del col_neighbors[0]
+        
+    if (row_neighbors[2] > dimension[1] - 1):
+        del row_neighbors[2]
+    if (row_neighbors[0] < 0):
+        del row_neighbors[0]
+    
+    neighbors = list()
+    for row in row_neighbors:
+        for col in col_neighbors:
+            neighbors.append((col, row))
+            
+    return neighbors
+
+def blur(image, dimension = (28, 28)):
+
+    assert (type(image) == np.ndarray), "image must be of type np.ndarray"
+
+    image = np.reshape(image, dimension)
+
+    blurred_image = [[0.0 for i in range(dimension[0])] for j in range(dimension[1])]
+
+    for i in range(dimension[0]):
+        for j in range(dimension[1]):
+
+            neighbors = get_valid_neighbor_coordinates((i, j))
+
+            sum_of_neighbors = 0.0
+            for neighbor in neighbors:
+                sum_of_neighbors += image[neighbor[0]][neighbor[1]]
+            blurred_image[i][j] = sum_of_neighbors / len(neighbors)
+
+    return blurred_image
+
+blurred_image = blur(X[2])
+fig, ax = plt.subplots()
+ax.axis("off")
+ax.imshow(
+    blurred_image,
+    aspect = "auto",
+    cmap = plt.get_cmap("Greys")
+)
+plt.show()
+fig, ax = plt.subplots()
+ax.axis("off")
+ax.imshow(
+    np.reshape(X[2], (28, 28)),
+    aspect = "auto",
+    cmap = plt.get_cmap("Greys")
+)
 plt.show()
