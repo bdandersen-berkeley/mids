@@ -69,6 +69,7 @@ head_training_data()
 
 # -------------------------------------------------------------------------------- Question 2 -----
 
+# Learn the training vocabulary and create the training term matrix
 train_vectorizer = CountVectorizer()
 train_term_matrix = train_vectorizer.fit_transform(newsgroups_train.data)
 
@@ -82,4 +83,12 @@ print("Average number of non-zero features per example: %.4f" % average_nonzero_
 # What fraction of the entries in the matrix are non-zero?
 fraction_nonzero_entries = \
     train_term_matrix.nnz / (train_term_matrix.shape[0] * train_term_matrix.shape[1])
+print("Fraction of entries in matrix that are non-zero: %.4f" % fraction_nonzero_entries)
+
+q2c_vocabulary = ["atheism", "graphics", "space", "religion"]
+q2c_vectorizer = CountVectorizer(vocabulary =  ["atheism", "graphics", "space", "religion"])
+q2c_term_matrix = q2c_vectorizer.fit_transform(newsgroups_train.data)
+fraction_nonzero_entries = \
+    q2c_term_matrix.nnz / (q2c_term_matrix.shape[0] * q2c_term_matrix.shape[1])
+print(q2c_term_matrix.shape)
 print("Fraction of entries in matrix that are non-zero: %.4f" % fraction_nonzero_entries)
