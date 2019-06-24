@@ -43,6 +43,8 @@ print('test label shape:', test_labels.shape)
 print('dev label shape:', dev_labels.shape)
 print('labels names:', newsgroups_train.target_names)
 
+# -------------------------------------------------------------------------------- Question 1 -----
+"""
 def head_training_data(num_examples = 5):
     '''
     Prints the first specified number of newsgroup training data labels and text.
@@ -63,3 +65,21 @@ def head_training_data(num_examples = 5):
         print("Text:\n-----\n", newsgroups_train.data[i], "\n-----\n")
 
 head_training_data()
+"""
+
+# -------------------------------------------------------------------------------- Question 2 -----
+
+train_vectorizer = CountVectorizer()
+train_term_matrix = train_vectorizer.fit_transform(newsgroups_train.data)
+
+# What is the size of the vocabulary?
+print("Vocabulary size:", len(train_vectorizer.get_feature_names()), "features")
+
+# What is the average number of non-zero features per example?
+average_nonzero_features = train_term_matrix.data.sum() / len(newsgroups_train.data)
+print("Average number of non-zero features per example: %.4f" % average_nonzero_features, "features")
+
+# What fraction of the entries in the matrix are non-zero?
+fraction_nonzero_entries = \
+    train_term_matrix.nnz / (train_term_matrix.shape[0] * train_term_matrix.shape[1])
+print("Fraction of entries in matrix that are non-zero: %.4f" % fraction_nonzero_entries)
