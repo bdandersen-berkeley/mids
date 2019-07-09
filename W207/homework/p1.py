@@ -50,7 +50,6 @@ mini_train_data, mini_train_labels = X[:1000], Y[:1000]
 
 # -------------------------------------------------------------------------------- Question 1 -----
 
-'''
 def get_example_digit_indices(digit_list, num_examples = 10):
     """
     Retrieves randomly-selected indices within MNIST data identifying digits 0 through 9.
@@ -84,7 +83,7 @@ def get_example_digit_indices(digit_list, num_examples = 10):
     assert (type(digit_list) is np.ndarray), "digit_list must be of type NumPy ndarray"
     assert (digit_list.size > 0), "digit_list must not be empty"
     assert (type(num_examples) is int), "num_examples must be of type int"
-    assert (0 < num_examples & num_examples <= 10), "num_examples must be an int between 1 and 10"
+    assert (0 < num_examples & num_examples <= 20), "num_examples must be an int between 1 and 20"
 
     # Create the list of lists to populate with image indices
     digit_indices = [[] for i in range(10)]
@@ -125,6 +124,7 @@ def get_example_digit_indices(digit_list, num_examples = 10):
 
     return digit_indices
 
+'''
 # Number of images of each digit to retrieve from the MNIST data and render
 IMAGE_NUM = 10
 
@@ -334,6 +334,7 @@ for i in range(len(dev_labels)):
 
 # -------------------------------------------------------------------------------- Question 6 -----
 
+'''
 def get_valid_neighbor_coordinates(pixel, dimension = (28, 28)):
     """
     Retrieves a list of coordinates adjacent to the specified pixel.
@@ -390,19 +391,229 @@ def blur(image, dimension = (28, 28)):
     return blurred_image
 
 blurred_image = blur(X[2])
-fig, ax = plt.subplots()
-ax.axis("off")
-ax.imshow(
+fig, ax = plt.subplots(2, 1)
+ax[0].axis("off")
+ax[0].imshow(
     blurred_image,
     aspect = "auto",
     cmap = plt.get_cmap("Greys")
 )
-plt.show()
-fig, ax = plt.subplots()
-ax.axis("off")
-ax.imshow(
+ax[1].axis("off")
+ax[1].imshow(
     np.reshape(X[2], (28, 28)),
     aspect = "auto",
     cmap = plt.get_cmap("Greys")
 )
 plt.show()
+'''
+# -------------------------------------------------------------------------------- Question 7 -----
+'''
+gnb_classifier = GaussianNB()
+gnb_classifier.fit(X = train_data, y = train_labels)
+gnb_predicted_labels = gnb_classifier.predict(dev_data)
+
+gnb_incorrect_count = 0.0
+for i in range(len(gnb_predicted_labels)):
+    if gnb_predicted_labels[i] != dev_labels[i]:
+        gnb_incorrect_count += 1.0
+        
+print("Images tested:", len(gnb_predicted_labels))
+print("Images incorrectly predicted:", int(gnb_incorrect_count))
+print("Classifier accuracy:", 1 - gnb_incorrect_count / len(gnb_predicted_labels))
+
+classifier = BernoulliNB(binarize = 0.5)
+classifier.fit(X = train_data, y = train_labels)
+predicted_labels = classifier.predict(dev_data)
+
+incorrect_count = 0.0
+for i in range(len(predicted_labels)):
+    if predicted_labels[i] != dev_labels[i]:
+        incorrect_count += 1.0
+        
+print("Images tested:", len(predicted_labels))
+print("Images incorrectly predicted:", int(incorrect_count))
+print("Classifier accuracy:", 1 - incorrect_count / len(predicted_labels))
+
+BISECTION = 1.0 / 2.0
+
+def bisect(d):
+    return 0 if d < BISECTION else 1
+
+bisected_train_data = np.empty(shape = (len(train_data), 784))
+for i in range(len(train_data)):
+    for j in range(784):
+        if train_data[i][j] < BISECTION: 
+            bisected_train_data[i][j] = 0
+        else:
+            bisected_train_data[i][j] = 1
+bisected_dev_data = np.empty(shape = (len(dev_data), 784))
+for i in range(len(dev_data)):
+    for j in range(784):
+        if dev_data[i][j] < BISECTION: 
+            bisected_dev_data[i][j] = 0
+        else:
+            bisected_dev_data[i][j] = 1
+
+classifier = BernoulliNB()
+classifier.fit(X = bisected_train_data, y = train_labels)
+predicted_labels = classifier.predict(bisected_dev_data)
+
+incorrect_count = 0.0
+for i in range(len(predicted_labels)):
+    if predicted_labels[i] != dev_labels[i]:
+        incorrect_count += 1.0
+
+print("Images tested:", len(predicted_labels))
+print("Images incorrectly predicted:", int(incorrect_count))
+print("Classifier accuracy:", 1 - incorrect_count / len(predicted_labels))
+
+FIRST_TRISECTION = 1.0 / 3.0
+SECOND_TRISECTION = 2.0 / 3.0
+
+def trisect(d):
+    if (d <= FIRST_TRISECTION):
+        return 0
+    elif (d <= SECOND_TRISECTION):
+        return 1
+    return 2
+
+trisected_train_data = np.empty(shape = (len(train_data), 784))
+for i in range(len(train_data)):
+    trisected_train_data[i] = map(trisect, train_data[i])
+trisected_dev_data = np.empty(shape = (len(dev_data), 784))
+for i in range(len(dev_data)):
+    trisected_dev_data[i] = map(trisect, dev_data[i])
+    
+classifier = MultinomialNB()
+classifier.fit(X = trisected_train_data, y = train_labels)
+predicted_labels = classifier.predict(trisected_dev_data)
+
+incorrect_count = 0.0
+for i in range(len(predicted_labels)):
+    if predicted_labels[i] != dev_labels[i]:
+        incorrect_count += 1.0
+        
+print("Images tested:", len(predicted_labels))
+print("Images incorrectly predicted:", int(incorrect_count))
+print("Classifier accuracy:", 1 - incorrect_count / len(predicted_labels))
+'''
+# -------------------------------------------------------------------------------- Question 8 -----
+'''
+def P8(alphas):
+    
+    classifier = GridSearchCV(BernoulliNB(binarize = 0.5), param_grid = alphas)
+    return classifier.fit(X = train_data, y = train_labels)
+
+alphas = {'alpha': [0.0, 0.0001, 0.001, 0.01, 0.1, 0.5, 1.0, 2.0, 10.0]}
+nb = P8(alphas)
+
+print("Best estimator alpha:", nb.best_estimator_.alpha)
+print(classification_report(test_labels, nb.best_estimator_.predict(X = test_data)))
+'''
+
+# -------------------------------------------------------------------------------- Question 9 -----
+
+'''
+gnb_classifier = GaussianNB()
+gnb_classifier.fit(X = train_data, y = train_labels)
+print(classification_report(test_labels, gnb_classifier.predict(X = test_data)))
+gnb_predicted_labels = gnb_classifier.predict(dev_data)
+'''
+
+# ------------------------------------------------------------------------------- Question 10 -----
+
+'''
+classifier = BernoulliNB(binarize = 0.5)
+classifier.fit(X = train_data, y = train_labels)
+
+pixel_probabilities = np.empty((10, 784))
+for i in range(10):
+    np.exp(classifier.feature_log_prob_[i], pixel_probabilities[i])
+
+generated_image = np.empty(784)
+
+fig, ax = plt.subplots(nrows = 10, ncols = 20)
+
+for digit_idx in range(10):
+    for sample_idx in range(20):
+
+        for i in range(784):
+            generated_image[i] = np.random.choice(
+                2, # 0 or 1
+                p = [
+                    1.0 - pixel_probabilities[digit_idx][i], 
+                    pixel_probabilities[digit_idx][i]
+                ]
+            )
+
+        ax[digit_idx][sample_idx].axis("off")
+        ax[digit_idx][sample_idx].imshow(
+            X = np.reshape(generated_image, (28, 28)),
+            aspect = "auto",
+            cmap = plt.get_cmap("Greys")
+        )
+
+plt.show()
+
+np.random.seed()
+
+IMAGES_PER_DIGIT = 20
+
+BISECTION = 1.0 / 2.0
+bisected_train_data = np.empty(shape = (len(train_data), 784))
+for i in range(len(train_data)):
+    for j in range(784):
+        if train_data[i][j] < BISECTION: 
+            bisected_train_data[i][j] = 0
+        else:
+            bisected_train_data[i][j] = 1
+
+classifier = BernoulliNB()
+classifier.fit(X = bisected_train_data, y = train_labels)
+
+pixel_probabilities = np.empty((10, 784))
+for i in range(10):
+    np.exp(classifier.feature_log_prob_[i], pixel_probabilities[i])
+
+digit_indices = get_example_digit_indices(
+    digit_list = train_data, 
+    num_examples = IMAGES_PER_DIGIT
+)
+
+generated_image = np.empty(784)
+
+fig, ax = plt.subplots(nrows = 10, ncols = IMAGES_PER_DIGIT)
+
+for digit_idx in range(10):
+    for sample_idx in range(IMAGES_PER_DIGIT):
+
+        # for i in range(784):
+        #     generated_image[i] = np.random.choice(
+        #         2, # 0 or 1
+        #         p = [
+        #             1.0 - pixel_probabilities[digit_idx][i], 
+        #             pixel_probabilities[digit_idx][i]
+        #         ]
+        #     )
+
+        ax[digit_idx][sample_idx].axis("off")
+        ax[digit_idx][sample_idx].imshow(
+            X = np.reshape(bisected_train_data[digit_indices[digit_idx][sample_idx]], (28, 28)),
+            aspect = "auto",
+            cmap = plt.get_cmap("Greys")
+        )
+
+plt.show()
+'''
+
+# ------------------------------------------------------------------------------- Question 11 -----
+
+classifier = BernoulliNB(alpha = 0.0)
+classifier.fit(X = train_data, y = train_labels)
+pp_matrix = classifier.predict_proba(X = dev_data)
+
+for i in range(dev_data.shape[0]):
+    
+    # Retrieve probabilities for the current digit in the test data
+    pp_array = pp_matrix[i:]
+    pp_max_idx = np.argmax(pp_array)
